@@ -1,0 +1,78 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}*/
+
+.table thead > tr > th {
+  vertical-align: middle;
+}
+
+.dailyStatusTable {
+  max-width: 800px;
+  margin-bottom: 0px;
+}
+
+.weeklyStatusTable {
+  max-width: 900px;
+  margin-bottom: 0px;
+}
+
+.table-bordered {
+  border: 1px solid;
+}
+
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+  border: 1px solid;
+}
+
+.table caption + thead tr:first-child th,
+.table colgroup + thead tr:first-child th,
+.table thead:first-child tr:first-child th,
+.table caption + thead tr:first-child td,
+.table colgroup + thead tr:first-child td,
+.table thead:first-child tr:first-child td {
+  border-top: 1px solid;
+}
+
+.tableMaxWidth{
+    max-width: 100%;
+}
+
+.YellowBackground{
+    background-color: yellow;
+}
+
+.NoPaddingRight{
+    padding-right: 0px;
+}
+
+.headerLike{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding-left: 0px;
+}

@@ -1,0 +1,377 @@
+﻿@model List<DailyStatus.Models.StatusModel>
+
+@{
+    ViewBag.Title = "Daily Report";
+}
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('#navbar li').removeClass('active');
+            $('#StatusReportMenu').addClass('active');
+
+            $("input:text").focus(function () { $(this).select(); });
+            $("textarea").focus(function () { $(this).select(); });
+
+            var enableDays = [];
+            @if (TempData["DateList"] != null)
+            {
+                string DateList = (string)TempData["DateList"];
+                TempData.Keep("DateList");
+                <text>
+                enableDays = [@Html.Raw(DateList)];
+                </text>
+            }
+
+            $('#StatusDate').datepicker({
+                dateFormat: 'yy-mm-dd',
+                beforeShowDay: enableAllTheseDays,
+                onSelect: changeDate
+            });
+
+            function changeDate(dateValue) {
+                var link = '@Url.Action("StatusReport", "DailyStatus", new { selectedDate = "-1" })';
+                link = link.replace("-1", dateValue);
+                window.location.href = link;
+            }
+
+            function enableAllTheseDays(date) {
+                var sdate = $.datepicker.formatDate('dd-mm-yy', date)
+                if ($.inArray(sdate, enableDays) != -1) {
+                    return [true];
+                }
+                return [false];
+            }
+
+            String.prototype.replaceAll = function (search, replacement) {
+                var target = this;
+                return target.replace(new RegExp(search, 'g'), replacement);
+            };
+
+            Date.prototype.yyyymmdd = function () {
+                var mm = this.getMonth() + 1; // getMonth() is zero-based
+                var dd = this.getUTCDate();
+
+                return [this.getFullYear(),
+                        (mm > 9 ? '' : '0') + mm,
+                        (dd > 9 ? '' : '0') + dd
+                ].join('-');
+            };
+
+            Date.prototype.ddmmyyyy = function () {
+                var mm = this.getMonth() + 1; // getMonth() is zero-based
+                var dd = this.getUTCDate();
+
+                return [(dd > 9 ? '' : '0') + dd,
+                        (mm > 9 ? '' : '0') + mm,
+                        this.getFullYear()
+                ].join('-');
+            };
+        })
+
+        function CopyTableToClipboard(el) {
+            var body = document.body, range, sel;
+            if (document.createRange && window.getSelection) {
+                range = document.createRange();
+                sel = window.getSelection();
+                sel.removeAllRanges();
+                try {
+                    range.selectNodeContents(el);
+                    sel.addRange(range);
+                } catch (e) {
+                    range.selectNode(el);
+                    sel.addRange(range);
+                }
+            } else if (body.createTextRange) {
+                range = body.createTextRange();
+                range.moveToElementText(el);
+                range.select();
+            }
+            document.execCommand("copy");
+        }
+
+        function ChangeEditMode() {
+            var rows = document.getElementById('statusTable').rows;
+            var col_no = 0;
+            var do_show = ($('#statusTable thead tr th:visible').length == 4 ? false : true);
+            for (var row = 0; row < rows.length; row++) {
+                var cols = rows[row].cells;
+                if (col_no >= 0 && col_no < cols.length && cols.length != 1 && cols.length != 2) {
+                    cols[col_no].style.display = do_show ? '' : 'none';
+                }
+            }
+            var EditModeButtonText = do_show ? "Read Mode" : "Edit Mode";
+            $("#EditMode").prop('value', EditModeButtonText);
+        }
+
+        function showEditWindow(id) {
+            var SoFar = document.getElementById(id).children[3].innerHTML.replaceAll('<br>•    ', '\n').slice(5);
+            var NextDay = document.getElementById(id).nextElementSibling.children[1].innerHTML.replaceAll('<br>•    ', '\n').slice(5);
+            var Impediments = document.getElementById(id).nextElementSibling.nextElementSibling.children[1].innerHTML.replaceAll
+                ('<br>', '\n')
+            7
+            $("#Name").val(document.getElementById(id).children[1].innerHTML);
+            $("#SoFar").val(SoFar);
+            $("#NextDay").val(NextDay);
+            $("#Impediments").val(Impediments);
+            $("#RecordId").val(id);
+
+            $("#editor").dialog({
+                title: "Edit",
+                width: 600,
+                height: 500,
+                modal: true,
+                closeOnEscape: true,
+                closeText: ''
+            });
+        }
+
+        function updateRecord() {
+            var requestData = {
+                ID: $("#RecordId").val(),
+                Name: $("#Name").val(),
+                SoFar: $("#SoFar").val(),
+                NextDay: $("#NextDay").val(),
+                Impediments: $("#Impediments").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: '/DailyStatus/DailyStatus/EditDailyStatus',
+                data: JSON.stringify(requestData),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function(resultData) {
+                    $("#updateStatus").append(resultData)
+                },
+                failure: function (response) {
+                    $('#updateFailureStatus').append(response.responseText);
+                },
+                error: function (response) {
+                    $('#updateFailureStatus').append(response.responseText);
+                }
+            });
+        }
+
+        function previousDate() {
+            var enableDays = [];
+            @if (TempData["DateList"] != null)
+            {
+                string DateList = (string)TempData["DateList"];
+                TempData.Keep("DateList");
+                <text>
+                enableDays = [@Html.Raw(DateList)];
+                </text>
+            }
+            var selectedDate = (new URL(document.location)).searchParams.get("selectedDate");
+            var date = ""
+            if (selectedDate == null) {
+                date = $('#StatusDate').datepicker('getDate');
+            }
+            else {
+                var parts = (new URL(document.location)).searchParams.get("selectedDate").split('-');
+                var date = new Date(parts[0], parts[1] - 1, parts[2]);
+                date = isNaN(date.getTime()) ? $('#StatusDate').datepicker('getDate') : date;
+            }
+            //check for past 10 days till data is found
+            for (var i = 10; i > 0; i--) {
+                date.setDate(date.getDate() - 1)
+                var checkDate = date.ddmmyyyy();
+                if (enableDays.indexOf(checkDate) > -1)
+                    i = -1;
+            }
+            if (i == 0)
+                alert("No data for any past date");
+            else {
+                var formatedDate = date.yyyymmdd();
+                changeCalendarDate(formatedDate);
+            }
+        }
+
+        function nextDate() {
+            var enableDays = [];
+            @if (TempData["DateList"] != null)
+            {
+                string DateList = (string)TempData["DateList"];
+                TempData.Keep("DateList");
+                <text>
+                enableDays = [@Html.Raw(DateList)];
+                </text>
+            }
+            var selectedDate = (new URL(document.location)).searchParams.get("selectedDate");
+            var date = ""
+            if (selectedDate == null) {
+                date = $('#StatusDate').datepicker('getDate');
+            }
+            else {
+                var parts = (new URL(document.location)).searchParams.get("selectedDate").split('-');
+                var date = new Date(parts[0], parts[1] - 1, parts[2]);
+                date = isNaN(date.getTime()) ? $('#StatusDate').datepicker('getDate') : date;
+            }
+            //check for future 10 days till data is found
+            for (var i = 10; i > 0; i--) {
+                date.setDate(date.getDate() + 1)
+                var checkDate = date.ddmmyyyy();
+                if (enableDays.indexOf(checkDate) > -1)
+                    i = -1;
+            }
+            if (i == 0)
+                alert("No data for any future date");
+            else {
+                var formatedDate = date.yyyymmdd();
+                changeCalendarDate(formatedDate);
+            }
+        }
+
+        function changeCalendarDate(dateValue) {
+            var link = '@Url.Action("StatusReport", "DailyStatus", new { selectedDate = "-1" })';
+            link = link.replace("-1", dateValue);
+            window.location.href = link;
+        }
+    </script>
+}
+@*<div class="form-group" style="padding-left: 0px;">
+    <h3><input type="button" value="<<" class="btn btn-default col-md-1" onclick="previousDate();" /></h3>
+    <div class="col-md-4">
+        @Html.TextBox("StatusDate", (string)ViewBag.SelectedDate, new { @class = "form-control datepicker", placeholder = "Select date for which you want status" })
+    </div>
+    <h3><input type="button" value=">>" class="btn btn-default col-md-1" onclick="nextDate();" /></h3>
+</div>*@
+@*<div class="col-md-1 headerLike" style="padding: 0px;">
+    <input type="button" value="<<" class="btn btn-default" onclick="previousDate();" />
+    <input type="button" value=">>" class="btn btn-default" onclick="nextDate();" />
+</div>*@
+<div class="col-md-4 headerLike" style="padding-left: 0px;">
+    @Html.TextBox("StatusDate", (string)ViewBag.SelectedDate, new { @class = "form-control datepicker", placeholder = "Select date for which you want status" })
+</div>
+
+<div class="col-md-6 headerLike">
+    <input type="button" value="Copy table" class="btn btn-default" onclick="CopyTableToClipboard(document.getElementById('statusTable'));" />&nbsp;&nbsp;
+    <input type="button" value="Copy status for Slack" class="btn btn-default" onclick="CopyTableToClipboard(document.getElementById('statusSlack'));" />&nbsp;&nbsp;
+    @if (Model.Count > 0)
+    {
+        <input id="EditMode" type="button" value="Edit Mode" class="btn btn-default" onclick="ChangeEditMode();" />
+    }
+</div> 
+
+<table id="statusTable" class="table table-bordered dailyStatusTable">
+    <thead>
+        <tr style="color:#1F497D">
+            <th style="width:10px; text-align: center; display:none;">
+            </th>
+            <th style="width:120px;text-align: center;">
+                Member
+            </th>
+            <th style="width:120px;text-align: center;">
+                Questions
+            </th>
+            <th style="text-align: center;">
+                @ViewBag.SelectedDate
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count == 0)
+        {
+            <tr style='color:#1F497D'>
+                <td colspan="3" style="vertical-align: middle;text-align: center;">No one has submitted status for this day</td>
+            </tr>
+        }
+        @foreach (DailyStatus.Models.StatusModel mod in Model)
+        {
+            <tr id="@mod.ID" style='color:#1F497D'>
+                <td rowspan="3" style="vertical-align: middle;text-align: center; display:none;"><a href="javascript:showEditWindow(@mod.ID);"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                <td rowspan="3" style="vertical-align: middle;text-align: center;">@mod.Name</td>
+                <td style="vertical-align: middle;">So Far</td>
+                @*<td style="white-space: pre-line">@mod.SoFar</td>*@
+                <td>•    @Html.Raw(Html.Encode(mod.SoFar).Replace("\n", "<br />•    "))</td>
+                
+            </tr>
+            <tr style='color:#1F497D'>
+                <td style="vertical-align: middle;">Next Day</td>
+                @*<td style="white-space: pre-line">@mod.NextDay</td>*@
+                <td>•    @Html.Raw(Html.Encode(mod.NextDay).Replace("\n", "<br />•    "))</td>
+            </tr>
+            <tr style='color:#1F497D;background:#FFCC99;'>
+                <td style="vertical-align: middle;">Impediments</td>
+                @*<td style="white-space: pre-line">@mod.Impediments</td>*@
+                <td>@Html.Raw(Html.Encode(mod.Impediments).Replace("\n", "<br />"))</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr/>
+<div id="statusSlack">
+    @foreach (DailyStatus.Models.StatusModel mod in Model)
+    {
+        <b>*@mod.Name*</b><br/>
+        <span>So Far:</span><br/>
+        <span>•    </span>@Html.Raw(Html.Encode(mod.SoFar).Replace("\n", "<br />•    "))<br/>
+        <span>Next Day:</span><br />
+        <span>•    </span>@Html.Raw(Html.Encode(mod.NextDay).Replace("\n", "<br />•    "))<br />
+        <span>Impediments:</span><br />
+        @Html.Raw(Html.Encode(mod.Impediments).Replace("\n", "<br />"))<br /><br />
+    }
+</div>
+
+@if (Model.Count != 0)
+{
+    using (Html.BeginForm())
+    {
+        <div id="editor" class="form-horizontal" style="display:none">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group" style="margin-right:0px">
+                @Html.LabelFor(model => model[0].Name, htmlAttributes: new { @class = "control-label col-md-2 NoPaddingRight" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model[0].Name, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", id = "Name" } })
+                    @Html.ValidationMessageFor(model => model[0].Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-right:0px">
+                @Html.LabelFor(model => model[0].SoFar, htmlAttributes: new { @class = "control-label col-md-2 NoPaddingRight" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model[0].SoFar, new { htmlAttributes = new { @class = "form-control", @rows = "3", id = "SoFar" } })
+                    @Html.ValidationMessageFor(model => model[0].SoFar, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-right:0px">
+                @Html.LabelFor(model => model[0].NextDay, htmlAttributes: new { @class = "control-label col-md-2 NoPaddingRight" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model[0].NextDay, new { htmlAttributes = new { @class = "form-control", @rows = "3", id = "NextDay" } })
+                    @Html.ValidationMessageFor(model => model[0].NextDay, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-right:0px">
+                @Html.LabelFor(model => model[0].Impediments, htmlAttributes: new { @class = "control-label col-md-2 NoPaddingRight" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model[0].Impediments, new { htmlAttributes = new { @class = "form-control", @Value = "None", id = "Impediments" } })
+                    @Html.ValidationMessageFor(model => model[0].Impediments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group" style="margin-right:0px">
+                <div class="col-md-offset-2 col-md-10">
+                    <span>• Bullets will be added automatically before each line.</span>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-right:0px">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Update" class="btn btn-default" onclick="updateRecord();" />
+                </div>
+            </div>
+            <div>
+                <input id="RecordId" type="hidden" value="0" name="RecordId" />
+            </div>
+            <div class="col-md-offset-2">
+                <b><span id="updateStatus" style="color:Green"></span></b>
+            </div>
+            <div class="col-md-offset-2">
+                <b><span id="updateFailureStatus" style="color:red"></span></b>
+            </div>
+        </div>
+    }
+}

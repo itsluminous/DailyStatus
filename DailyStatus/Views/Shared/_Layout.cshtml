@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div id="navbar" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">    
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>               
+            </div>        
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li id="IndividualStatusMenu">@Html.ActionLink("Log Daily Status", "IndividualStatus", "DailyStatus")</li>
+                    <li id="IndividualWeeklyStatusMenu">@Html.ActionLink("Log Weekly Status", "IndividualWeeklyStatus", "DailyStatus")</li>
+                    <li id="StatusReportMenu">@Html.ActionLink("Daily Report", "StatusReport", "DailyStatus")</li>
+                    <li id="WeeklyStatusReportMenu">@Html.ActionLink("Weekly Report", "WeeklyStatusReport", "DailyStatus")</li>
+                    <li id="SearchMenu">@Html.ActionLink("Search", "Search", "DailyStatus")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody() 
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <!-- Including the jquery-ui script and style bundles -->
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Styles.Render("~/Content/themes/base/css")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

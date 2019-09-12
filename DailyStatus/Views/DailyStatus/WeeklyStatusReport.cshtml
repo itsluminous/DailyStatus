@@ -1,0 +1,349 @@
+﻿@model DailyStatus.Models.WeeklyStatusGroup
+
+@{
+    ViewBag.Title = "Weekly Report";
+}
+
+@section Scripts
+{
+    <script>
+        $(function(){
+            $('#navbar li').removeClass('active');
+            $('#WeeklyStatusReportMenu').addClass('active');
+
+            $("input:text").focus(function () { $(this).select(); });
+            $("textarea").focus(function () { $(this).select(); });
+            
+            var enableDays = [];
+            @if (TempData["WeeklyDateList"] != null)
+            {
+                string DateList = (string)TempData["WeeklyDateList"];
+                TempData.Keep("WeeklyDateList");
+                <text>
+                enableDays = [@Html.Raw(DateList)];
+                </text>
+            }
+            $('#StatusDate').datepicker({
+                dateFormat: 'yy-mm-dd',
+                beforeShowDay: enableAllTheseDays,
+                onSelect: function (dateValue) {
+                    var link = '@Url.Action("WeeklyStatusReport", "DailyStatus", new { selectedDate = "-1" })';
+                    link = link.replace("-1", dateValue);
+                    window.location.href = link;
+                }
+            });
+
+            function enableAllTheseDays(date) {
+                var sdate = $.datepicker.formatDate('dd-mm-yy', date)
+                if ($.inArray(sdate, enableDays) != -1) {
+                    return [true];
+                }
+                return [false];
+            }
+        })
+
+        function CopyTableToClipboard(el) {
+            if ($('#statusTable thead tr th:visible').length == 8) {
+                ChangeEditMode();
+            }
+            var body = document.body, range, sel;
+            if (document.createRange && window.getSelection) {
+                range = document.createRange();
+                sel = window.getSelection();
+                sel.removeAllRanges();
+                try {
+                    range.selectNodeContents(el);
+                    sel.addRange(range);
+                } catch (e) {
+                    range.selectNode(el);
+                    sel.addRange(range);
+                }
+            } else if (body.createTextRange) {
+                range = body.createTextRange();
+                range.moveToElementText(el);
+                range.select();
+            }
+            document.execCommand("copy");
+        }
+
+        function ChangeEditMode() {
+            var rows = document.getElementById('statusTable').rows;
+            var col_no = 0;
+            var showEdit = ($('#statusTable thead tr th:visible').length == 8 ? false : true);
+            for (var row = 0; row < rows.length; row++) {
+                var cols = rows[row].cells;
+                if (col_no >= 0 && col_no < cols.length && cols.length != 1) {
+                    cols[col_no].style.display = showEdit ? '' : 'none';
+                }
+            }
+            var EditModeButtonText = showEdit ? "Read Mode" : "Edit Mode";
+            $("#EditMode").prop('value', EditModeButtonText);
+            document.getElementById('WeeklyBriefRead').style.display = showEdit ? 'none' : '';
+            document.getElementById('WeeklyBriefEdit').style.display = showEdit ? '' : 'none';
+        }
+
+        function showEditWindow(id) {
+            var row = $('#' + id + ' td');
+
+            $("#AssignTo").val(row[3].innerHTML);
+            $("#Task").val(row[2].innerHTML);
+            $("#Priority").val(row[4].innerHTML);
+            $("#Complexity").val(row[5].innerHTML);
+            $("#TaskStatus").val(row[6].innerHTML);
+            $("#Comments").val(row[7].innerHTML);
+            $("#RecordId").val(id);
+
+            $("#editor").dialog({
+                title: "Edit",
+                width: 600,
+                height: 500,
+                modal: true,
+                closeOnEscape: true,
+                closeText: ''
+            });
+        }
+
+        function updateRecord() {
+            var requestData = {
+                ID: $("#RecordId").val(),
+                Task: $("#Task").val(),
+                AssignTo: $("#AssignTo").val(),
+                Priority: $("#Priority").val(),
+                Complexity: $("#Complexity").val(),
+                TaskStatus: $("#TaskStatus").val(),
+                Comments: $("#Comments").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: '/DailyStatus/DailyStatus/EditWeeklyStatus',
+                data: JSON.stringify(requestData),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (resultData) {
+                    $("#updateStatus").append(resultData)
+                },
+                failure: function (response) {
+                    $('#updateFailureStatus').append(response.responseText);
+                },
+                error: function (response) {
+                    $('#updateFailureStatus').append(response.responseText);
+                }
+            });
+        }
+
+        function updateBrief() {
+            $.ajax({
+                type: "POST",
+                url: '/DailyStatus/DailyStatus/EditWeeklyBrief',
+                data: JSON.stringify({ 'Brief': $("#WeeklyBriefText").val(), 'DateOfInsert': $("#WeeklyDateOfInsert").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (resultData) {
+                    if (resultData.includes("Success"))
+                        location.reload();
+                    else
+                        alert(resultData);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    </script>
+}
+
+<div class="col-md-4 headerLike" style="padding-left: 0px;">
+    @Html.TextBox("StatusDate", (string)ViewBag.WeekSpan, new { @class = "form-control datepicker", placeholder = "Select Monday of week for which you want status" })
+</div>
+
+<div class="col-md-8 headerLike">
+    <input type="button" value="Copy report" class="btn btn-default" onclick="CopyTableToClipboard(document.getElementById('weeklyStatusReport'));" />&nbsp; &nbsp;
+    @if (Model.WeeklyStatus.Count > 0)
+    {
+        <input id="EditMode" type="button" value="Edit Mode" class="btn btn-default" onclick="ChangeEditMode();" />
+    }
+</div>
+
+<div id="weeklyStatusReport">    
+    <div>
+        <h4>BusinessPLUS Maintenance Weekly Status Report - Week starting @Html.Raw(ViewBag.WeekStarting)</h4>
+    </div>
+    <div><p>
+        <span id="WeeklyBriefRead">@Html.Raw(Html.Encode(Model.WeeklyBrief).Replace("\n", "<br />-    "))</span>
+        <span id="WeeklyBriefEdit" style="display:none;">
+            <span class="col-md-7" style="padding-left: 0px; padding-bottom: 15px;">
+                <input id="WeeklyDateOfInsert" type="hidden" value= @Model.DateOfInsert name="WeeklyDateOfInsert" />
+                @Html.EditorFor(Model => Model.WeeklyBrief, new { htmlAttributes = new { @class = "form-control", @rows = "6",  id = "WeeklyBriefText",
+               placeholder = "Enter brief summary of weekly status here. \n-    Bullets will be added automatically before each line \n-    Except first line"} })
+            </span>
+            <span class="col-md-2">
+                <input type="submit" value="Update Summary" class="btn btn-default" onclick="updateBrief();" />
+            </span>
+        </span>
+    </p></div>
+    <table id="statusTable" class="table table-bordered weeklyStatusTable">
+        <thead>
+            <tr style="background:#b3b3b3;">
+                <th style="width:10px; text-align: center; display:none;">
+                </th>
+                <th style="width:60px; text-align: center;">
+                    S.No
+                </th>
+                <th style="width:120px; text-align: center;">
+                    Task
+                </th>
+                <th style="width:120px; text-align: center;">
+                    Assign To
+                </th>
+                <th style="width:60px; text-align: center;">
+                    Priority
+                </th>
+                <th style="width:80px; text-align: center;">
+                    Complexity
+                </th>
+                <th style="width:120px; text-align: center;">
+                    Status
+                </th>
+                <th style="text-align: center;">
+                    Comments
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @if(Model.WeeklyStatus.Count == 0)
+        {
+            <tr style='color:#1F497D'>
+                <td colspan="7" style="vertical-align: middle;text-align: center;">No one has submitted status for this week</td>
+            </tr>
+        }
+        @foreach (DailyStatus.Models.WeeklyStatusModel mod in Model.WeeklyStatus)
+        {
+            <tr id="@mod.ID" style='color:#1F497D'>
+                <td style="vertical-align: middle;text-align: center; display:none;"><a href="javascript:showEditWindow(@mod.ID);"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                <td style="vertical-align: middle;text-align: center;">@mod.SNo</td>
+                <td style="vertical-align: middle;text-align: center;width:120px;">@mod.Task</td>
+                <td style="vertical-align: middle;text-align: center;width:120px;">@mod.AssignTo</td>
+                <td style="vertical-align: middle;text-align: center;">@mod.Priority</td>
+                <td style="vertical-align: middle;text-align: center;">@mod.Complexity</td>
+                <td style="vertical-align: middle;text-align: center;">@mod.TaskStatus</td>
+                <td style="vertical-align: middle;">@mod.Comments</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <br/><br/>
+@if (Model.WeeklyStatus.Count != 0)
+{
+    <table id="summaryTable" class="table table-bordered weeklyStatusTable">
+        <thead>
+            <tr style="background:#b3b3b3;">
+                <th style="width:240px; text-align: center;">
+                    Weekly Status
+                </th>
+                <th style="width:100px; text-align: center;">
+                    P0
+                </th>
+                <th style="width:100px; text-align: center;">
+                    P1
+                </th>
+                <th style="width:100px; text-align: center;">
+                    P2
+                </th>
+                <th style="width:100px; text-align: center;">
+                    P3
+                </th>
+                <th style="text-align: center;">
+                    Comments
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DailyStatus.Models.WeeklyStatusSummary mod in Model.WeeklySummary)
+            {
+                <tr style='color:#1F497D'>
+                    <td style="vertical-align: middle;;">@mod.TaskStatus</td>
+                    <td style="vertical-align: middle;text-align: center;">@(mod.P0 == 0 ? "" : mod.P0.ToString())</td>
+                    <td style="vertical-align: middle;text-align: center;">@(mod.P1 == 0 ? "" : mod.P1.ToString())</td>
+                    <td style="vertical-align: middle;text-align: center;">@(mod.P2 == 0 ? "" : mod.P2.ToString())</td>
+                    <td style="vertical-align: middle;text-align: center;">@(mod.P3 == 0 ? "" : mod.P3.ToString())</td>
+                    <td style="vertical-align: middle;">@mod.Comments</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    using (Html.BeginForm())
+    {
+        <div id="editor" class="form-horizontal" style="display:none">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group" style="margin-right:0px">
+                @Html.LabelFor(model => model.WeeklyStatus[0].AssignTo, htmlAttributes: new { @class = "control-label col-md-2 NoPaddingRight" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.WeeklyStatus[0].AssignTo, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", id = "AssignTo" } })
+                    @Html.ValidationMessageFor(model => model.WeeklyStatus[0].AssignTo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-right:0px">
+                @Html.LabelFor(model => model.WeeklyStatus[0].Task, htmlAttributes: new { @class = "control-label col-md-2 NoPaddingRight" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.WeeklyStatus[0].Task, new { htmlAttributes = new { @class = "form-control", id = "Task" } })
+                    @Html.ValidationMessageFor(model => model.WeeklyStatus[0].Task, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-right:0px">
+                @Html.LabelFor(model => model.WeeklyStatus[0].Priority, htmlAttributes: new { @class = "control-label col-md-2 NoPaddingRight" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.WeeklyStatus[0].Priority, new { htmlAttributes = new { @class = "form-control", id = "Priority" } })
+                    @Html.ValidationMessageFor(model => model.WeeklyStatus[0].Priority, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-right:0px">
+                @Html.LabelFor(model => model.WeeklyStatus[0].Complexity, htmlAttributes: new { @class = "control-label col-md-2 NoPaddingRight" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.WeeklyStatus[0].Complexity, new SelectList(Enum.GetNames(typeof(DailyStatus.Models.Complexity))),
+               "----Select Complexity----", new { @class = "form-control", id = "Complexity" })
+                    @Html.ValidationMessageFor(model => model.WeeklyStatus[0].Complexity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-right:0px">
+                @Html.LabelFor(model => model.WeeklyStatus[0].TaskStatus, htmlAttributes: new { @class = "control-label col-md-2 NoPaddingRight" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.WeeklyStatus[0].TaskStatus, new SelectList(Enum.GetNames(typeof(DailyStatus.Models.TaskStatus)).Select(item => item.Replace('_', ' '))),
+               "----Select Status----", new { @class = "form-control", id = "TaskStatus" })
+                    @Html.ValidationMessageFor(model => model.WeeklyStatus[0].TaskStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-right:0px">
+                @Html.LabelFor(model => model.WeeklyStatus[0].Comments, htmlAttributes: new { @class = "control-label col-md-2 NoPaddingRight" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.WeeklyStatus[0].Comments, new { htmlAttributes = new { @class = "form-control", @rows = "4", id = "Comments" } })
+                    @Html.ValidationMessageFor(model => model.WeeklyStatus[0].Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-right:0px">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Update" class="btn btn-default" onclick="updateRecord();" />
+                </div>
+            </div>
+            <div>
+                <input id="RecordId" type="hidden" value="0" name="RecordId" />
+            </div>
+            <div class="col-md-offset-2">
+                <b><span id="updateStatus" style="color:Green"></span></b>
+            </div>
+            <div class="col-md-offset-2">
+                <b><span id="updateFailureStatus" style="color:red"></span></b>
+            </div>
+        </div>
+    }
+}
+</div>

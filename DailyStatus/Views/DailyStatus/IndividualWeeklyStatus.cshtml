@@ -1,0 +1,131 @@
+﻿@model DailyStatus.Models.WeeklyStatusModel
+
+@{
+    ViewBag.Title = "Weekly Status";
+}
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('#navbar li').removeClass('active');
+            $('#IndividualWeeklyStatusMenu').addClass('active');
+
+            $("input:text").focus(function () { $(this).select(); });
+            $("textarea").focus(function () { $(this).select(); });
+
+            if ($('#AssignTo') && ($('#AssignTo')[0].value == "" || $('#AssignTo')[0].value == null))
+                $('#AssignTo').focus();
+            else
+                $('#Task').focus();
+        })
+
+        $('.datepicker').datepicker({
+            dateFormat: 'yy-mm-dd',
+            beforeShowDay: enableAllTheseDays,
+            maxDate: new Date(),
+            onSelect: function (dateValue) {
+                $(".datepicker")[0].value = dateValue;
+            }
+        });
+
+        function enableAllTheseDays(date) {
+            var day = date.getDay();
+            return [day === 1];
+        }
+    </script>
+}
+
+<h3>Status from @ViewBag.WeekSpan</h3>
+<hr />
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @if(System.Configuration.ConfigurationManager.AppSettings["AllowBackEdit"].ToLower() == "true"){
+            <div class="form-group">
+                @Html.LabelFor(model => model.DateOfInsert, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.DateOfInsert, new { htmlAttributes = new { @class = "form-control datepicker", placeholder = "Select Monday of week" } })
+                    @Html.ValidationMessageFor(model => model.DateOfInsert, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AssignTo, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-5">
+                @Html.DropDownListFor(model => model.AssignTo, new SelectList(Enum.GetNames(typeof(DailyStatus.Models.EmployeeNames))),
+               "----Select your name----", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AssignTo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Task, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.Task, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Task, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Priority, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.Priority, new { htmlAttributes = new { @class = "form-control" }})
+                @Html.ValidationMessageFor(model => model.Priority, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Complexity, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-5">
+                @Html.DropDownListFor(model => model.Complexity, new SelectList(Enum.GetNames(typeof(DailyStatus.Models.Complexity))),
+               "----Select Complexity----", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Complexity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TaskStatus, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-5">
+                @Html.DropDownListFor(model => model.TaskStatus, new SelectList(Enum.GetNames(typeof(DailyStatus.Models.TaskStatus)).Select(item => item.Replace('_',' '))),
+               "----Select Status----", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TaskStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control", @rows = "4" } })
+                @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </div>
+        <div>
+            <input type="hidden" value="@ViewBag.Overwrite" name="Overwrite" />
+        </div>
+    </div>
+}
+
+@if (ViewBag.Success != null)
+{
+    <div class="col-md-offset-1">
+        <span style="color:Green"><b>@ViewBag.Success</b></span>
+    </div>
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="col-md-offset-1">
+        <span style="color:Red"><b>@ViewBag.Error</b></span>
+    </div>
+}
+

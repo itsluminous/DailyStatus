@@ -1,0 +1,102 @@
+﻿@using System.Text.RegularExpressions
+@model List<DailyStatus.Models.StatusModel>
+
+@{
+    ViewBag.Title = "Search";
+}
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('#navbar li').removeClass('active');
+            $('#SearchMenu').addClass('active');
+            $('#SearchString').focus();
+        })
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <div class="form-group" style="margin-top:20px">
+            <div class="col-md-4">
+                @Html.TextBox("SearchString", (string)ViewBag.SearchString, new { @class = "form-control", placeholder = "Type what you want to search" })
+            </div>            
+            <div class="col-md-2">
+                <input type="submit" value="Search" class="btn btn-default" style="width:100%" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.Label("Search in: ", new { @class = "control-label" })
+            </div>
+            <div class="col-md-2">
+                @Html.CheckBox("SearchFilter", new { @checked = "checked" })
+                @Html.Label("Name", new { @class = "control-label" })
+            </div>
+            <div class="col-md-2">
+                @Html.CheckBox("SearchFilter", new { @checked = "checked" })
+                @Html.Label("So Far", new { @class = "control-label" })
+            </div>
+            <div class="col-md-2">
+                @Html.CheckBox("SearchFilter", new { @checked = "checked" })
+                @Html.Label("Next Day", new { @class = "control-label" })
+            </div>
+            <div class="col-md-2">
+                @Html.CheckBox("SearchFilter", new { @checked = "checked" })
+                @Html.Label("Impediments", new { @class = "control-label" })
+            </div>
+        </div>
+
+    </div>
+}
+
+@if (ViewBag.ShowSearchResult == true)
+{
+    <table id="SearchResult" class="table table-bordered tableMaxWidth">
+        <thead>
+            <tr>
+                <th style="width:120px; color:#1F497D;text-align: center;">
+                    Member
+                </th>
+                <th style="width:120px; color:#1F497D;text-align: center;">
+                    So Far
+                </th>
+                <th style="width:120px; color:#1F497D;text-align: center;">
+                    Next Day
+                </th>
+                <th style="width:120px; color:#1F497D;text-align: center;">
+                    Impediments
+                </th>
+                <th style="width:120px; color:#1F497D;text-align: center;">
+                    Date
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr style='color:#1F497D'>
+                    <td colspan="5" style="vertical-align: middle;text-align: center;">No result for selected criteria</td>
+                </tr>
+            }
+            @foreach (DailyStatus.Models.StatusModel mod in Model)
+            {
+                <tr style='color:#1F497D'>
+                    @{string keyword = "<span class='YellowBackground'>" + @ViewBag.Searchstring + "</span>";}
+                    @{string nameModified = Regex.Replace(mod.Name, ViewBag.Searchstring, keyword, RegexOptions.IgnoreCase);}
+                    @{string SoFarModified = Regex.Replace(mod.SoFar, ViewBag.Searchstring, keyword, RegexOptions.IgnoreCase);}
+                    @{string NextDayModified = Regex.Replace(mod.NextDay, ViewBag.Searchstring, keyword, RegexOptions.IgnoreCase);}
+                    @{string ImpedimentsModified = Regex.Replace(mod.Impediments, ViewBag.Searchstring, keyword, RegexOptions.IgnoreCase);}
+
+                    <td style="vertical-align: middle;text-align: center;">@Html.Raw(nameModified)</td>
+                    <td style="vertical-align: middle;">•    @Html.Raw(SoFarModified.Replace("\n", "<br />•    "))</td>
+                    <td style="vertical-align: middle;">•    @Html.Raw(NextDayModified.Replace("\n", "<br />•    "))</td>
+                    <td style="vertical-align: middle;">@Html.Raw(ImpedimentsModified)</td>
+                    <td style="vertical-align: middle;text-align: center;">@mod.DateOfInsert</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

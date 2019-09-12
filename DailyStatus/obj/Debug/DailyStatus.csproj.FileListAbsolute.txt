@@ -1,0 +1,106 @@
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\ApplicationInsights.config
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\csc.exe
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\Microsoft.CodeAnalysis.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\Microsoft.CSharp.Core.targets
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\Microsoft.VisualBasic.Core.targets
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\System.Collections.Immutable.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\System.Reflection.Metadata.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\vbc.exe
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\VBCSCompiler.exe
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\roslyn\VBCSCompiler.exe.config
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\DailyStatus.dll.config
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\DailyStatus.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\DailyStatus.pdb
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Antlr3.Runtime.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.AI.Agent.Intercept.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.AI.DependencyCollector.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.AI.PerfCounterCollector.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.AI.ServerTelemetryChannel.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.AI.Web.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.AI.WindowsServer.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.ApplicationInsights.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.Web.Infrastructure.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Newtonsoft.Json.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.Helpers.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.Mvc.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.Optimization.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.Razor.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.WebPages.Deployment.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.WebPages.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.WebPages.Razor.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\WebGrease.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.AI.DependencyCollector.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.AI.ServerTelemetryChannel.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.AI.Web.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.AI.WindowsServer.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.ApplicationInsights.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.Helpers.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.Mvc.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.Optimization.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.Razor.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.WebPages.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.WebPages.Deployment.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\System.Web.WebPages.Razor.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Antlr3.Runtime.pdb
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\bin\Newtonsoft.Json.xml
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\obj\Debug\DailyStatus.csprojResolveAssemblyReference.cache
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\obj\Debug\DailyStatus.dll
+c:\users\kumarp\documents\visual studio 2015\Projects\DailyStatus\DailyStatus\obj\Debug\DailyStatus.pdb
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\ApplicationInsights.config
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\csc.exe
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\vbc.exe
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\VBCSCompiler.exe
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\DailyStatus.dll.config
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\DailyStatus.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\DailyStatus.pdb
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Antlr3.Runtime.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.AI.Agent.Intercept.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.AI.DependencyCollector.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.AI.PerfCounterCollector.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.AI.ServerTelemetryChannel.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.AI.Web.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.AI.WindowsServer.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.ApplicationInsights.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Newtonsoft.Json.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.Helpers.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.Mvc.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.Optimization.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.Razor.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.WebPages.Deployment.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.WebPages.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.WebPages.Razor.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\WebGrease.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.AI.DependencyCollector.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.AI.ServerTelemetryChannel.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.AI.Web.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.AI.WindowsServer.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.ApplicationInsights.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.Helpers.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.Mvc.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.Optimization.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.Razor.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.WebPages.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.WebPages.Deployment.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\System.Web.WebPages.Razor.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Antlr3.Runtime.pdb
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\bin\Newtonsoft.Json.xml
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\obj\Debug\DailyStatus.dll
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\obj\Debug\DailyStatus.pdb
+C:\Users\Prakash.Kumar\Documents\DailyStatus\DailyStatus\obj\Debug\DailyStatus.csprojResolveAssemblyReference.cache
